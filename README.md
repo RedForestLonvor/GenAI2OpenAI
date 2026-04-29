@@ -2,7 +2,7 @@
 
 ## 项目简介
 
-GenAI 是一个基于 Flask 的聊天机器人接口服务，兼容 OpenAI 的聊天完成接口，利用上海科技大学的 GenAI API 进行智能对话。项目通过封装 GenAI API，支持流式响应和普通响应，从而方便客户端集成与调用。该项目适合开发具有中文支持及本地化需求的智能聊天机器人应用。
+GenAI 是一个基于 Flask 的聊天机器人接口服务，兼容 OpenAI 的聊天完成接口，利用上海科技大学的 GenAI API 进行智能对话。项目通过封装 GenAI API，支持思维链、流式响应和普通响应，从而方便客户端集成与调用。该项目适合开发具有中文支持及本地化需求的智能聊天机器人应用。
 
 ## 安装与运行
 
@@ -21,10 +21,33 @@ uv run main.py --token <token> [--port 5000]
 
 ## 功能和用法
 
-- 兼容 OpenAI Chat Completion API 请求格式，支持 POST `/v1/chat/completions` 接口，实现智能聊天功能。
+- 兼容 OpenAI API，支持 `POST /v1/chat/completions`、`POST /v1/responses`接口，实现智能聊天功能。
 - 支持流式（stream）及非流式响应，方便高效地获取 AI 回复。
-- 提供 `/v1/models` 接口列出可用模型，如 `gpt-3.5-turbo`、`gpt-4`、`deepseek-v3` 等。
+- 提供 `/v1/models` 接口列出可用模型，如 `deepseek-v4-pro`、`gpt-5.5`、`glm-5.1` 等。
 - 内置 `/health` 健康检查接口，用于服务状态监测。
+
+### 支持模型
+
+| 模型 id | 可用性 | 思维链 |
+|---|---|---|
+| deepseek-r1 | ✅ | ✅ |
+| deepseek-v3 | ✅ | ❌ |
+| glm-5.1 | ✅ | ❌ |
+| minimax-m1 | ✅ | ✅ |
+| qwen3.5-397b-a17b | ✅ | ✅ |
+| gpt-5.5 | ✅ | 隐藏 |
+| gpt-5.4 | ✅ | 隐藏 |
+| gpt-5.2 | ✅ | 隐藏 |
+| gpt-5 | ✅ | 隐藏 |
+| gpt-4.1 | ✅ | 隐藏 |
+| gpt-4.1-mini | ✅ | 隐藏 |
+| gpt-o4-mini | ✅ | 隐藏 |
+| gpt-o3 | ✅ | 隐藏 |
+| deepseek-v4-pro | ❌ | 未知 |
+| deepseek-v4-flash | ❌ | 未知 |
+
+兼容层同时兼容历史请求名和底层模型名，详见[模型列表](docs/模型列表.md)。  
+以上信息最后更新于 `2026-04-29`。
 
 ## Token获取
 
@@ -49,4 +72,5 @@ uv run main.py --token <token> [--port 5000]
 ## TODO
 
 - 身份验证或者签名机制，避免滥用
+- 基于提示词工程+json parser实现 tool-call 支持。
 

@@ -28,26 +28,42 @@ uv run main.py --token <token> [--port 5000]
 
 ### 支持模型
 
-| 模型 id | 可用性 | 思维链 |
-|---|---|---|
-| deepseek-r1 | ✅ | ✅ |
-| deepseek-v3 | ✅ | ❌ |
-| glm-5.1 | ✅ | ❌ |
-| minimax-m1 | ✅ | ✅ |
-| qwen3.5-397b-a17b | ✅ | ✅ |
-| gpt-5.5 | ✅ | 隐藏 |
-| gpt-5.4 | ✅ | 隐藏 |
-| gpt-5.2 | ✅ | 隐藏 |
-| gpt-5 | ✅ | 隐藏 |
-| gpt-4.1 | ✅ | 隐藏 |
-| gpt-4.1-mini | ✅ | 隐藏 |
-| gpt-o4-mini | ✅ | 隐藏 |
-| gpt-o3 | ✅ | 隐藏 |
-| deepseek-v4-pro | ❌ | 未知 |
-| deepseek-v4-flash | ❌ | 未知 |
+| 模型 id | 可用性 | 思维链 | 实测上下文长度 |
+|---|---|---|---|
+| deepseek-r1 | ✅ | ✅ | ~100k-128k tokens |
+| deepseek-v3 | ✅ | ❌ | ≥200k tokens |
+| glm-5.1 | ✅ | ❌ | ≥200k tokens |
+| minimax-m1 | ✅ | ✅ | ≥200k tokens |
+| qwen3.5-397b-a17b | ✅ | ✅ | <100k tokens |
+| gpt-5.5 | ✅ | 隐藏 | 未测试（额度限制） |
+| gpt-5.4 | ✅ | 隐藏 | 未测试（额度限制） |
+| gpt-5.2 | ✅ | 隐藏 | 未测试（额度限制） |
+| gpt-5 | ✅ | 隐藏 | 未测试（额度限制） |
+| gpt-4.1 | ✅ | 隐藏 | 未测试（额度限制） |
+| gpt-4.1-mini | ✅ | 隐藏 | 未测试（额度限制） |
+| gpt-o4-mini | ✅ | 隐藏 | 未测试（额度限制） |
+| gpt-o3 | ✅ | 隐藏 | 未测试（额度限制） |
+| deepseek-v4-pro | ❌ | 未知 | - |
+| deepseek-v4-flash | ❌ | 未知 | - |
 
-兼容层同时兼容历史请求名和底层模型名，详见[模型列表](docs/模型列表.md)。  
+兼容层同时兼容历史请求名和底层模型名，详见[模型列表](docs/模型列表.md)。
 以上信息最后更新于 `2026-04-29`。
+
+### 测试模型上下文长度
+
+项目内置 `context_length_tester` skill，可用于测试模型的实际上下文处理能力：
+
+```bash
+# 大海捞针测试（推荐）
+uv run tools/skills/context_length_tester/context_length_tester.py --model deepseek-v3
+
+# 快速探测 API 上限
+uv run tools/skills/context_length_tester/context_length_tester.py --model deepseek-v3 --mode probe
+```
+
+测试方法采用**大海捞针法**（Needle in a Haystack）：在长文本中间插入关键信息，验证模型能否准确检索。这比简单的二分查找更能反映模型的真实上下文处理能力。
+
+**注意**：Azure GPT 模型有严格的额度限制，无法进行上下文长度测试。建议参考各模型的官方文档了解其标称上下文长度。
 
 ## Token获取
 

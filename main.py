@@ -6,7 +6,6 @@ from datetime import datetime
 import requests
 from flask import Flask, Response, jsonify, request, stream_with_context
 from flask_cors import CORS
-from icecream import ic
 
 app = Flask(__name__)
 CORS(app)
